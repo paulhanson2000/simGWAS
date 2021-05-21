@@ -23,6 +23,8 @@ expected_z_score<-function(N0,N1,snps,W,gamma.W,freq,
         stop("freq must be a data.frame, with a column 'Probability' giving relative frequency of each haplotype (row)")
     if(!all(snps %in% colnames(freq)))
         stop("not all snps found in freq")
+    if(!length(W) || length(W)!=length(gamma.W))
+      stop("W and gamma.W must be of equal length >= 1")
     if(!all(W %in% colnames(freq)))
         stop("not all W found in freq")
     exp_z_score<-est_statistic(N0,N1,snps,W,gamma.W,freq,GenoProbList)

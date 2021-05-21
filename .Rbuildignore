@@ -7,3 +7,6 @@ src/.gitignore
 .git
 .Rproj.user
 docs
+FAQ.md
+^doc$
+^Meta$

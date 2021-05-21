@@ -112,35 +112,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// combinationRefs
-NumericMatrix combinationRefs(const IntegerMatrix& x, const IntegerMatrix& cols, const IntegerMatrix& reference, const NumericVector& prop, int shiftSize, int threads, bool verbose);
-RcppExport SEXP _simGWAS_combinationRefs(SEXP xSEXP, SEXP colsSEXP, SEXP referenceSEXP, SEXP propSEXP, SEXP shiftSizeSEXP, SEXP threadsSEXP, SEXP verboseSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const IntegerMatrix& >::type x(xSEXP);
-    Rcpp::traits::input_parameter< const IntegerMatrix& >::type cols(colsSEXP);
-    Rcpp::traits::input_parameter< const IntegerMatrix& >::type reference(referenceSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type prop(propSEXP);
-    Rcpp::traits::input_parameter< int >::type shiftSize(shiftSizeSEXP);
-    Rcpp::traits::input_parameter< int >::type threads(threadsSEXP);
-    Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
-    rcpp_result_gen = Rcpp::wrap(combinationRefs(x, cols, reference, prop, shiftSize, threads, verbose));
-    return rcpp_result_gen;
-END_RCPP
-}
-// combination2
-IntegerMatrix combination2(IntegerMatrix x, IntegerMatrix cols);
-RcppExport SEXP _simGWAS_combination2(SEXP xSEXP, SEXP colsSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< IntegerMatrix >::type x(xSEXP);
-    Rcpp::traits::input_parameter< IntegerMatrix >::type cols(colsSEXP);
-    rcpp_result_gen = Rcpp::wrap(combination2(x, cols));
-    return rcpp_result_gen;
-END_RCPP
-}
 // vcf2haps
 IntegerMatrix vcf2haps(const CharacterMatrix& x);
 RcppExport SEXP _simGWAS_vcf2haps(SEXP xSEXP) {
@@ -175,8 +146,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_simGWAS_haplabs", (DL_FUNC) &_simGWAS_haplabs, 1},
     {"_simGWAS_happrobs", (DL_FUNC) &_simGWAS_happrobs, 2},
     {"_simGWAS_meanC", (DL_FUNC) &_simGWAS_meanC, 1},
-    {"_simGWAS_combinationRefs", (DL_FUNC) &_simGWAS_combinationRefs, 7},
-    {"_simGWAS_combination2", (DL_FUNC) &_simGWAS_combination2, 2},
     {"_simGWAS_vcf2haps", (DL_FUNC) &_simGWAS_vcf2haps, 1},
     {"_simGWAS_wsumsq", (DL_FUNC) &_simGWAS_wsumsq, 3},
     {NULL, NULL, 0}

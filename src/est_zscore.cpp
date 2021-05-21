@@ -85,12 +85,5 @@ double vbeta( const double N0, const double N1, const NumericVector& Ufactor,  c
 
 // [[Rcpp::export]]
 double psum( const NumericVector& x,  const NumericVector& y){
-  double ret=0;
   return sum(x*y);
-  //   const int n = x.size();
-  // for(int i=0; i<n; i++) {
-  //   //    if (!ISNAN(x[i]) && !ISNAN(y[i]))
-  //     ret =+ x[i]*y[i];
-  // }
-  // return ret;
 }

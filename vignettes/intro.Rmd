@@ -24,6 +24,7 @@ data(simGWAS_test_data) # loads a matrix of haplotypes
 dim(haps)
 
 ## name the columns of haps, and store these as snp names
+nsnps=ncol(haps)
 snps <- colnames(haps) <- paste0("s",1:nsnps)
 
 ## calculate MAF
@@ -49,7 +50,7 @@ zexp <- expected_z_score(N0=10000, # number of controls
               N1=10000, # number of cases
               snps=snps, # column names in freq of SNPs for which Z scores should be generated
               W=CV, # causal variants, subset of snps
-              gamma.W=log(g1), # odds ratios
+              gamma.W=log(g1), # log odds ratios
               freq=freq, # reference haplotypes
               GenoProbList=FP) # FP above
 ```

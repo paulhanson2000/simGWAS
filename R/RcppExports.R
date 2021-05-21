@@ -33,14 +33,6 @@ meanC <- function(x) {
     .Call('_simGWAS_meanC', PACKAGE = 'simGWAS', x)
 }
 
-combinationRefs <- function(x, cols, reference, prop, shiftSize = 2L, threads = -1L, verbose = FALSE) {
-    .Call('_simGWAS_combinationRefs', PACKAGE = 'simGWAS', x, cols, reference, prop, shiftSize, threads, verbose)
-}
-
-combination2 <- function(x, cols) {
-    .Call('_simGWAS_combination2', PACKAGE = 'simGWAS', x, cols)
-}
-
 vcf2haps <- function(x) {
     .Call('_simGWAS_vcf2haps', PACKAGE = 'simGWAS', x)
 }
