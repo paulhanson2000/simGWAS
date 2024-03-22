@@ -30,7 +30,8 @@ Imports:
     dplyr,
     combinat,
     corpcor,
-    mvtnorm
+    mvtnorm,
+    parallel
 RoxygenNote: 7.1.1
 Suggests: 
     knitr,

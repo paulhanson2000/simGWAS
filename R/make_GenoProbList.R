@@ -20,14 +20,25 @@
 ##' @param snps Index of SNPs at which we wish to compute the expected Z Score
 ##' @param W	Index of true causal SNPs (these need not be in "snps")
 ##' @param freq Frequencies of SNP appearances (computed using snphap)
+##' @param n_thread Number of threads to use for parallel execution
 ##' @export
 ##' @return The the GenoProb values for each X
 ##' @author Mary Fortune and Chris Wallace
 ##' @examples
 ##' freq=fake_freq() # fake haplotype frequency data
 ##' problist=make_GenoProbList(1:2,W=1,freq)
-make_GenoProbList<-function(snps,W,freq){
-    lapply(snps, fastextractsnps, W=W,freq=freq)## hapmap=freqmat,freqprob=freqprob)
+make_GenoProbList<-function(snps,W,freq, n_thread=parallel::detectCores()){
+    if(n_thread<2) {
+      lapply(snps,fastextractsnps,W=W,freq=freq)
+    } else if(.Platform$OS.type=="unix") {
+      parallel::mclapply(snps,fastextractsnps,W=W,freq=freq, mc.cores=n_thread)
+    } else { # Windows
+      clust <- parallel::makeCluster(n_thread)
+      parallel::clusterEvalQ(clust, library(simGWAS)) # Load simGWAS itself so the cluster nodes can see the Rcpp functions
+      ret <- parallel::parLapply(clust, snps,fastextractsnps,W=W,freq=freq)
+      parallel::stopCluster(clust)
+      ret
+    }
 }
 
 ## make_GenoProbList_Wsize1<-function(snps,W,freq){
