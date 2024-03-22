@@ -4,7 +4,7 @@
 #endif
 using namespace Rcpp;
 #include <ctime>
-#include <emmintrin.h>
+//#include <emmintrin.h>
 
 template <class T>
 T findMax(const std::vector<T>& data){
