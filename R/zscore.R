@@ -45,8 +45,7 @@ expected_z_score<-function(N0,N1,snps,W,gamma.W,freq,
 ##' Z # no causal variants
 simulated_z_null<-function(snps,freq, nrep=1){
     exp_z_score<- rep(0,length(snps))
-    LD<-wcor2(as.matrix(freq[,setdiff(colnames(freq),"Probability")]),
-              freq$Probability)
+    LD<-wcor2(as.matrix( freq[,colnames(freq) %in% snps] ), freq$Probability)
     sim_z_score<-rmvnorm(n=nrep,mean=exp_z_score,sigma=LD)
     if(nrep==1)
         return(c(sim_z_score))
@@ -68,8 +67,7 @@ simulated_z_score<-function(N0,N1,snps,W,gamma.W,freq,
                             GenoProbList=make_GenoProbList(snps=snps,W=W,freq=freq),
                             nrep=1){
     exp_z_score<- expected_z_score(N0,N1,snps,W,gamma.W,freq,GenoProbList)
-    LD<-wcor2(as.matrix(freq[,setdiff(colnames(freq),"Probability")]),
-              freq$Probability)
+    LD<-wcor2(as.matrix( freq[,colnames(freq) %in% snps] ), freq$Probability)
     sim_z_score<-rmvnorm(n=nrep,mean=exp_z_score,sigma=LD)
     if(nrep==1)
         return(c(sim_z_score))
