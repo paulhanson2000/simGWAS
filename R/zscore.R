@@ -37,6 +37,11 @@ expected_z_score<-function(N0,N1,snps,W,gamma.W,freq,
 ##' @export
 ##' @inheritParams expected_z_score
 ##' @param LD TODO DESCRIPTION
+##' @param rmvnorm_method string specifying the matrix decomposition 
+##'     used to determine the matrix root of ‘sigma’.  Possible
+##'     methods are eigenvalue decomposition (‘"eigen"’, default) or
+##'     Cholesky decomposition (‘"chol"’).  Cholesky is faster, but
+##'     only works if your LD matrix is symmetric and positive definite.
 ##' @param nrep Number of replicates (simulated vectors of Z scores)
 ##'     under this scenario.  Default=1
 ##' @author Mary Fortune and Chris Wallace
@@ -46,9 +51,10 @@ expected_z_score<-function(N0,N1,snps,W,gamma.W,freq,
 ##' Z # no causal variants
 simulated_z_null<-function(snps,freq,
                            LD=wcor2(as.matrix( freq[,colnames(freq) %in% snps] ), freq$Probability),
+                           rmvnorm_method=c("eigen","chol"),
                            nrep=1){
     exp_z_score<- rep(0,length(snps))
-    sim_z_score<-rmvnorm(n=nrep,mean=exp_z_score,sigma=LD)
+    sim_z_score<-rmvnorm(n=nrep,mean=exp_z_score,sigma=LD,method=rmvnorm_method)
     if(nrep==1)
         return(c(sim_z_score))
     sim_z_score
@@ -59,6 +65,11 @@ simulated_z_null<-function(snps,freq,
 ##' @export
 ##' @inheritParams expected_z_score
 ##' @param LD TODO DESCRIPTION
+##' @param rmvnorm_method string specifying the matrix decomposition 
+##'     used to determine the matrix root of ‘sigma’.  Possible
+##'     methods are eigenvalue decomposition (‘"eigen"’, default) or
+##'     Cholesky decomposition (‘"chol"’).  Cholesky is faster, but
+##'     only works if your LD matrix is symmetric and positive definite.
 ##' @param nrep Number of replicates (simulated vectors of Z scores)
 ##'     under this scenario.  Default=1
 ##' @author Mary Fortune and Chris Wallace
@@ -69,9 +80,10 @@ simulated_z_null<-function(snps,freq,
 simulated_z_score<-function(N0,N1,snps,W,gamma.W,freq,
                             GenoProbList=make_GenoProbList(snps=snps,W=W,freq=freq),
                             LD=wcor2(as.matrix( freq[,colnames(freq) %in% snps] ), freq$Probability),
+                            rmvnorm_method=c("eigen","chol"),
                             nrep=1){
     exp_z_score<- expected_z_score(N0,N1,snps,W,gamma.W,freq,GenoProbList)
-    sim_z_score<-rmvnorm(n=nrep,mean=exp_z_score,sigma=LD)
+    sim_z_score<-rmvnorm(n=nrep,mean=exp_z_score,sigma=LD,method=rmvnorm_method)
     if(nrep==1)
         return(c(sim_z_score))
     sim_z_score
