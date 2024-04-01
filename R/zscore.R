@@ -36,6 +36,7 @@ expected_z_score<-function(N0,N1,snps,W,gamma.W,freq,
 ##' @title Compute a NULL simulated Z Score
 ##' @export
 ##' @inheritParams expected_z_score
+##' @param LD TODO DESCRIPTION
 ##' @param nrep Number of replicates (simulated vectors of Z scores)
 ##'     under this scenario.  Default=1
 ##' @author Mary Fortune and Chris Wallace
@@ -43,9 +44,10 @@ expected_z_score<-function(N0,N1,snps,W,gamma.W,freq,
 ##' freq=fake_freq(nhaps=100,nsnps=5) # fake haplotype frequency data
 ##'     Z=simulated_z_null(snps=paste0("s",1:5),freq=freq,nrep=3)
 ##' Z # no causal variants
-simulated_z_null<-function(snps,freq, nrep=1){
+simulated_z_null<-function(snps,freq,
+                           LD=wcor2(as.matrix( freq[,colnames(freq) %in% snps] ), freq$Probability),
+                           nrep=1){
     exp_z_score<- rep(0,length(snps))
-    LD<-wcor2(as.matrix( freq[,colnames(freq) %in% snps] ), freq$Probability)
     sim_z_score<-rmvnorm(n=nrep,mean=exp_z_score,sigma=LD)
     if(nrep==1)
         return(c(sim_z_score))
@@ -56,6 +58,7 @@ simulated_z_null<-function(snps,freq, nrep=1){
 ##' @title Compute a simulated Z Score
 ##' @export
 ##' @inheritParams expected_z_score
+##' @param LD TODO DESCRIPTION
 ##' @param nrep Number of replicates (simulated vectors of Z scores)
 ##'     under this scenario.  Default=1
 ##' @author Mary Fortune and Chris Wallace
@@ -65,9 +68,9 @@ simulated_z_null<-function(snps,freq, nrep=1){
 ##'     Z # causal variant is SNP 1, with OR 1.5
 simulated_z_score<-function(N0,N1,snps,W,gamma.W,freq,
                             GenoProbList=make_GenoProbList(snps=snps,W=W,freq=freq),
+                            LD=wcor2(as.matrix( freq[,colnames(freq) %in% snps] ), freq$Probability),
                             nrep=1){
     exp_z_score<- expected_z_score(N0,N1,snps,W,gamma.W,freq,GenoProbList)
-    LD<-wcor2(as.matrix( freq[,colnames(freq) %in% snps] ), freq$Probability)
     sim_z_score<-rmvnorm(n=nrep,mean=exp_z_score,sigma=LD)
     if(nrep==1)
         return(c(sim_z_score))
