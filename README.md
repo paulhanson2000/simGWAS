@@ -1,3 +1,21 @@
+This fork of simGWAS makes it faster, and ARM-compatible. It can be used the same way as the original simGWAS, so see the original vignette. However, when using the `simulated_z_score()` function, do the following for maximum speed gains:
+
+```{r}
+# Pre-calculate GenoProbList
+gpl <- make_GenoProbList(..., n_thread=parallel::detectCores())
+
+# Pre-calculate weighted LD
+LD <- simGWAS:::wcor2(as.matrix( freq[!colnames(freq) %in% "Probability"] ), freq$Probability)
+
+# Trick to make the LD matrix positive definite, so Cholesky decomposition can be used
+diag(LD) <- 1.0001
+
+# Pass in pre-calculated GenoProbList
+# Pass in pre-calculated LD
+# Choose Cholesky decomposition instead of the default Eigenvalue decomposition
+simulated_z_score(..., GenoProbList=gpl, LD=LD, rmvnorm_method="chol")
+```
+
 # simGWAS
 Simulating GWAS output with a given causal model.
 
