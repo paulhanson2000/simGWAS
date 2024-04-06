@@ -36,12 +36,8 @@ expected_z_score<-function(N0,N1,snps,W,gamma.W,freq,
 ##' @title Compute a NULL simulated Z Score
 ##' @export
 ##' @inheritParams expected_z_score
-##' @param LD TODO DESCRIPTION
-##' @param rmvnorm_method string specifying the matrix decomposition 
-##'     used to determine the matrix root of ‘sigma’.  Possible
-##'     methods are eigenvalue decomposition (‘"eigen"’, default) or
-##'     Cholesky decomposition (‘"chol"’).  Cholesky is faster, but
-##'     only works if your LD matrix is symmetric and positive definite.
+##' @param LD weighted LD matrix. Automatically computed based on `freq`, but may be useful to pre-compute if running this function multiple times with the same `freq`.
+##' @param rmvnorm_method string specifying the matrix decomposition used.  Possible methods are eigenvalue decomposition (‘"eigen"’, default) or Cholesky decomposition (‘"chol"’).  Cholesky is faster, but only works if your LD matrix is symmetric and positive definite. An easy way to make your LD matrix positive definite is `diag(LD) <- 1.0001`.
 ##' @param nrep Number of replicates (simulated vectors of Z scores)
 ##'     under this scenario.  Default=1
 ##' @author Mary Fortune and Chris Wallace
@@ -51,7 +47,7 @@ expected_z_score<-function(N0,N1,snps,W,gamma.W,freq,
 ##' Z # no causal variants
 simulated_z_null<-function(snps,freq,
                            LD=wcor2(as.matrix( freq[,colnames(freq) %in% snps] ), freq$Probability),
-                           rmvnorm_method=c("eigen","chol"),
+                           rmvnorm_method="eigen",
                            nrep=1){
     exp_z_score<- rep(0,length(snps))
     sim_z_score<-rmvnorm(n=nrep,mean=exp_z_score,sigma=LD,method=rmvnorm_method)
@@ -64,12 +60,8 @@ simulated_z_null<-function(snps,freq,
 ##' @title Compute a simulated Z Score
 ##' @export
 ##' @inheritParams expected_z_score
-##' @param LD TODO DESCRIPTION
-##' @param rmvnorm_method string specifying the matrix decomposition 
-##'     used to determine the matrix root of ‘sigma’.  Possible
-##'     methods are eigenvalue decomposition (‘"eigen"’, default) or
-##'     Cholesky decomposition (‘"chol"’).  Cholesky is faster, but
-##'     only works if your LD matrix is symmetric and positive definite.
+##' @param LD weighted LD matrix. Automatically computed based on `freq`, but may be useful to pre-compute if running this function multiple times with the same `freq`.
+##' @param rmvnorm_method string specifying the matrix decomposition used.  Possible methods are eigenvalue decomposition (‘"eigen"’, default) or Cholesky decomposition (‘"chol"’).  Cholesky is faster, but only works if your LD matrix is symmetric and positive definite. An easy way to make your LD matrix positive definite is `diag(LD) <- 1.0001`.
 ##' @param nrep Number of replicates (simulated vectors of Z scores)
 ##'     under this scenario.  Default=1
 ##' @author Mary Fortune and Chris Wallace
@@ -80,7 +72,7 @@ simulated_z_null<-function(snps,freq,
 simulated_z_score<-function(N0,N1,snps,W,gamma.W,freq,
                             GenoProbList=make_GenoProbList(snps=snps,W=W,freq=freq),
                             LD=wcor2(as.matrix( freq[,colnames(freq) %in% snps] ), freq$Probability),
-                            rmvnorm_method=c("eigen","chol"),
+                            rmvnorm_method="eigen",
                             nrep=1){
     exp_z_score<- expected_z_score(N0,N1,snps,W,gamma.W,freq,GenoProbList)
     sim_z_score<-rmvnorm(n=nrep,mean=exp_z_score,sigma=LD,method=rmvnorm_method)

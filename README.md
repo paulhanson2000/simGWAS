@@ -16,6 +16,8 @@ diag(LD) <- 1.0001
 simulated_z_score(..., GenoProbList=gpl, LD=LD, rmvnorm_method="chol")
 ```
 
+Compiling R with BLAS is highly recommended and will speed everything up by another 50 times. This is tricky but if you are using a compute cluster it has likely already been done for you.
+
 # simGWAS
 Simulating GWAS output with a given causal model.
 
